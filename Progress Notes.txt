@@ -1,0 +1,4 @@
+Day 1
+I just setup a MySQL server. I generated some random data for now. I need to get some clarification regarding the data for game_session (date_add, duration_s_theory, duration_s_actual, parent_gs_id)
+
+I need to review the document again.
