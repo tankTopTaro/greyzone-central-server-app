@@ -2,3 +2,6 @@ Day 1
 I just setup a MySQL server. I generated some random data for now. I need to get some clarification regarding the data for game_session (date_add, duration_s_theory, duration_s_actual, parent_gs_id)
 
 I need to review the document again.
+
+Day 2
+Created some API routes for the CSA. I need to create the GFA next to simulate the POST methods of the API. I need to ask about the data for the game_session by tomorrow. Setting up the raspberry pi can wait until my card reader arrive.
