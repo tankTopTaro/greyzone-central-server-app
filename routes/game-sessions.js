@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import gameSessionsController from '../controllers/gameSessionsController.js';
+
 const router = express.Router();
-const gameSessionsController = require('../controllers/gameSessionsController');
 
-router.post('/', gameSessionsController.uploadGameSessions)
+router.post('/', gameSessionsController.uploadGameSessions);
 
-module.exports = router;
+export default router;

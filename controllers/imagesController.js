@@ -1,12 +1,29 @@
-const path = require('path');
+import Image from '../models/image.js';
 
-exports.getPlayerImage = (req, res) => {
-    const { player_id } = req.params;
-    const imagePath = path.join(__dirname, "../uploads/players", `${player_id}.jpg`);
+const imagesController = {
+    getPlayerImage: (req, res) => {
+        const { player_id } = req.params;
+        
+        const image = Image.getImage(player_id)
+    
+        res.sendFile(image, (err) => {
+            if(err) {
+                res.status(404).json({ error: "Image not found" });
+            }
+        });
+    },
 
-    res.sendFile(imagePath, (err) => {
-        if(err) {
-            res.status(404).json({ error: "Image not found" });
+    getPlayerImageFromDB: async (req, res) => {
+        try {
+            const image = await Image.getImageFromDB(req.params.player_id);
+    
+            if (!image) return res.status(404).json({ error: "Player Image not found" });
+    
+            res.json(image)
+        } catch (error) {
+            res.status(500).json({ error: "Database error "});
         }
-    });
-};
+    }
+}
+
+export default imagesController;

@@ -1,13 +1,15 @@
-const pool = require('../db');
+import FacilitySession from '../models/facilitySession.js';
 
-exports.createFacilitySession = async (req, res) => {
-    const { id, date_add, date_exec, duration_m, facility_id, player_id } = req.body
-
-    try {
-        const [result] = await pool.query("INSERT INTO facility_session (id, date_add, date_exec, duration_m, facility_id, player_id) VALUES (?, ?, ?, ?, ?, ?)", [id, date_add, date_exec, duration_m, facility_id, player_id]);
-
-        res.json({ message: "Facility session created!" });
-    } catch (error) {
-        res.status(500).json({ error: "Server error" });
+const facilitySessionController = {
+    createFacilitySession: async (req, res) => {
+        try {
+            const facilitySessionId = await FacilitySession.create(req.body)
+    
+            res.json({ message: "Facility session created!", id: facilitySessionId });
+        } catch (error) {
+            res.status(500).json({ error: "Server error" });
+        }
     }
 };
+
+export default facilitySessionController

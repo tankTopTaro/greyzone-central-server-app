@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import facilitySessionController from '../controllers/facilitySessionController.js';
+
 const router = express.Router();
-const facilitySessionController = require('../controllers/facilitySessionController');
 
-router.post('/create', facilitySessionController.createFacilitySession)
+router.post('/create', facilitySessionController.createFacilitySession);
 
-module.exports = router;
+export default router;
