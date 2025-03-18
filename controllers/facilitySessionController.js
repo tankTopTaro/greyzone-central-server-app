@@ -9,6 +9,16 @@ const facilitySessionController = {
         } catch (error) {
             res.status(500).json({ error: "Server error" });
         }
+    },
+
+    updateFacilitySession: async (req, res) => {
+        try {
+            const facilitySessionId = await FacilitySession.update(req.body)
+    
+            res.json({ message: "Facility session created!", id: facilitySessionId });
+        } catch (error) {
+            res.status(500).json({ error: "Server error" });
+        }
     }
 };
 

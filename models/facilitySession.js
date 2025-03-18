@@ -17,6 +17,21 @@ const FacilitySession = {
             console.error("Error creating facility session:", error);
             throw new Error("Failed to create facility session");
         }
+    },
+
+    update: async (data) => {
+        const { date_exec, duration_m, facility_id, player_id } = data;
+
+        const [result] = await pool.query(
+            "UPDATE facility_session SET date_exec = ?, duration_m = ? WHERE facility_id = ? AND player_id = ?",
+            [date_exec, duration_m, facility_id, player_id]
+        );
+
+        if (result.affectedRows === 0) {
+            throw new Error("No matching session found or no changes made.");
+        }
+
+        return true;
     }
 };
 

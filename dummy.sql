@@ -1,9 +1,9 @@
-USE `mydb` ;
+USE `u469693320_mydb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`player`
+-- Table `u469693320_mydb`.`player`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`player` (`id`, `nick_name`, `date_add`, `email`, `phone`, `last_name`, `first_name`, `gender`, `birth_date`, `notes`, `log`, `league_country`, `league_city`, `league_district`, `league_other`, `rfid_tag_uid`)
+INSERT INTO `u469693320_mydb`.`player` (`id`, `nick_name`, `date_add`, `email`, `phone`, `last_name`, `first_name`, `gender`, `birth_date`, `notes`, `log`, `league_country`, `league_city`, `league_district`, `league_other`, `rfid_tag_uid`)
 SELECT * FROM (
     SELECT 'F1-1', 'Shadow', '2025-02-14', 'shadow@gmail.com', '+1234567890', 'Smith', 'John', 'Male', '1995-08-21 00:00:00', 'Top scorer in local league', 'Logged in at 10 AM', 'USA', 'New York', 'Manhattan', 'University League', 'RFID-F1-1'
     UNION ALL
@@ -25,14 +25,14 @@ SELECT * FROM (
     UNION ALL
     SELECT 'F1-6', 'Falcon', '2025-02-14', 'falcon@email.com', '+8899001122', 'Lewis', 'Mia', 'Female', '1998-02-28 00:00:00', 'Great team spirit', 'Attended league meeting', 'USA', 'New York', 'Manhattan', 'District League', 'RFID-F1-6'
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`player` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`player` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`facility`
+-- Table `u469693320_mydb`.`facility`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`facility` (`date_add`, `country`, `city`, `name`)
+INSERT INTO `u469693320_mydb`.`facility` (`date_add`, `country`, `city`, `name`)
 SELECT * FROM (
     SELECT '2025-02-14 10:30:00', 'USA', 'New York', 'Greyzone NY'
     UNION ALL
@@ -44,14 +44,14 @@ SELECT * FROM (
     UNION ALL
     SELECT '2025-02-10 12:10:00', 'Canada', 'Toronto', 'Greyzone Toronto'
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`facility` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`facility` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`game_session`
+-- Table `u469693320_mydb`.`game_session`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`game_session` (`date_add`, `room_type`, `game_rule`, `game_level`, `duration_s_theory`, `duration_s_actual`, `game_log`, `log`, `is_collaborative`, `parent_gs_id`, `facility_id`)
+INSERT INTO `u469693320_mydb`.`game_session` (`date_add`, `room_type`, `game_rule`, `game_level`, `duration_s_theory`, `duration_s_actual`, `game_log`, `log`, `is_collaborative`, `parent_gs_id`, `facility_id`)
 SELECT * FROM (
     SELECT 
         '2025-02-14 12:40:00' AS `date_add`, 
@@ -82,14 +82,14 @@ SELECT * FROM (
     UNION ALL
     SELECT '2025-02-19 12:46:00', 'MonkeyRun', 'Bump_it', 3, 60, 33, 'New record', 'New game', 1, 7, 1
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`game_session` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`game_session` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team`
+-- Table `u469693320_mydb`.`team`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`team` (`id`, `name`, `nbr_of_players`, `date_add`, `unique_identifier`)
+INSERT INTO `u469693320_mydb`.`team` (`id`, `name`, `nbr_of_players`, `date_add`, `unique_identifier`)
 SELECT temp.id, temp.name, temp.nbr_of_players, temp.date_add, temp.unique_identifier FROM (
     SELECT 'F1-1,F1-2,F1-3,F1-4' AS id, 'Team Alpha' AS name, 4 AS nbr_of_players, '2025-02-14 12:00:00' AS date_add, 'F1-1,F1-2,F1-3,F1-4' AS unique_identifier
     UNION ALL
@@ -97,15 +97,15 @@ SELECT temp.id, temp.name, temp.nbr_of_players, temp.date_add, temp.unique_ident
     UNION ALL
     SELECT 'F1-5,F1-6', 'Team Beta', 2, '2025-02-14 13:00:00', 'F1-5,F1-6'
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`team` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`team` LIMIT 1);
 
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team_game_session`
+-- Table `u469693320_mydb`.`team_game_session`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`team_game_session` (`date_add`, `score`, `is_won`, `game_session_id`, `team_id`)
+INSERT INTO `u469693320_mydb`.`team_game_session` (`date_add`, `score`, `is_won`, `game_session_id`, `team_id`)
 SELECT * FROM (
     SELECT 
         '2025-02-14 12:40:00' AS date_add, 
@@ -130,14 +130,14 @@ SELECT * FROM (
     UNION ALL
     SELECT '2025-02-14 12:46:00', 1700, 1, 9, 'F1-5,F1-6'
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`team_game_session` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`team_game_session` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`facility_session`
+-- Table `u469693320_mydb`.`facility_session`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`facility_session` (`date_add`, `date_exec`, `duration_m`, `facility_id`, `player_id`)
+INSERT INTO `u469693320_mydb`.`facility_session` (`date_add`, `date_exec`, `duration_m`, `facility_id`, `player_id`)
 SELECT * FROM (
     SELECT '2025-02-14 12:44:00', '2025-02-14 12:40:00', 20, 1, 'F1-1'  
     UNION ALL
@@ -151,14 +151,14 @@ SELECT * FROM (
     UNION ALL
     SELECT '2025-02-19 12:46:00', '2025-02-19 12:40:00', 30, 1, 'F1-6' 
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`facility_session` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`facility_session` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team_player`
+-- Table `u469693320_mydb`.`team_player`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`team_player` (`team_id`, `player_id`)
+INSERT INTO `u469693320_mydb`.`team_player` (`team_id`, `player_id`)
 SELECT * FROM (
     SELECT 'F1-1,F1-2,F1-3,F1-4', 'F1-1' -- Team Alpha (F1)
     UNION ALL
@@ -180,14 +180,14 @@ SELECT * FROM (
     UNION ALL
     SELECT 'F1-5,F1-6', 'F1-6' 
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`team_player` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`team_player` LIMIT 1);
 
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`player_game_session`
+-- Table `u469693320_mydb`.`player_game_session`
 -- -----------------------------------------------------
-INSERT INTO `mydb`.`player_game_session` (`date_add`, `score`, `is_won`, `game_session_id`, `player_id`, `team_id`, `facility_session_id`)
+INSERT INTO `u469693320_mydb`.`player_game_session` (`date_add`, `score`, `is_won`, `game_session_id`, `player_id`, `team_id`, `facility_session_id`)
 SELECT * FROM (
     SELECT
         '2025-02-14 12:40:00' AS date_add, 
@@ -234,4 +234,4 @@ SELECT * FROM (
     SELECT '2025-02-19 12:46:00', 1700, 1, 3, 'F1-6', 'F1-5,F1-6', 6
     
 ) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM `mydb`.`player_game_session` LIMIT 1);
+WHERE NOT EXISTS (SELECT 1 FROM `u469693320_mydb`.`player_game_session` LIMIT 1);

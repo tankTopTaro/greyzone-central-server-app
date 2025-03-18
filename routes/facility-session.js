@@ -4,5 +4,6 @@ import facilitySessionController from '../controllers/facilitySessionController.
 const router = express.Router();
 
 router.post('/create', facilitySessionController.createFacilitySession);
+router.post('/update', facilitySessionController.updateFacilitySession)
 
 export default router;

@@ -14,13 +14,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `u469693320_mydb` DEFAULT CHARACTER SET utf8 ;
+USE `u469693320_mydb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`player`
+-- Table `u469693320_mydb`.`player`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`player` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`player` (
   `id` VARCHAR(15) NOT NULL,
   `nick_name` VARCHAR(45) NULL,
   `date_add` VARCHAR(45) NULL,
@@ -42,9 +42,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`facility`
+-- Table `u469693320_mydb`.`facility`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`facility` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`facility` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `country` VARCHAR(45) NULL,
@@ -55,9 +55,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`game_session`
+-- Table `u469693320_mydb`.`game_session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`game_session` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`game_session` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `room_type` VARCHAR(45) NULL,
@@ -74,16 +74,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`game_session` (
   INDEX `fk_game_session_facility1_idx` (`facility_id` ASC) VISIBLE,
   CONSTRAINT `fk_game_session_facility1`
     FOREIGN KEY (`facility_id`)
-    REFERENCES `mydb`.`facility` (`id`)
+    REFERENCES `u469693320_mydb`.`facility` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team`
+-- Table `u469693320_mydb`.`team`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`team` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`team` (
   `id` VARCHAR(100) NOT NULL COMMENT 'Special id construction : it must be a csv of the players ids sorted ASC',
   `name` VARCHAR(45) NULL,
   `nbr_of_players` INT NULL,
@@ -94,9 +94,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team_game_session`
+-- Table `u469693320_mydb`.`team_game_session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`team_game_session` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`team_game_session` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `score` INT NULL,
@@ -108,21 +108,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`team_game_session` (
   INDEX `fk_player_result_team1_idx` (`team_id` ASC) VISIBLE,
   CONSTRAINT `fk_player_result_game_session1`
     FOREIGN KEY (`game_session_id`)
-    REFERENCES `mydb`.`game_session` (`id`)
+    REFERENCES `u469693320_mydb`.`game_session` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_player_result_team1`
     FOREIGN KEY (`team_id`)
-    REFERENCES `mydb`.`team` (`id`)
+    REFERENCES `u469693320_mydb`.`team` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`facility_session`
+-- Table `u469693320_mydb`.`facility_session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`facility_session` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`facility_session` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `date_exec` DATETIME NULL COMMENT 'When there may be a crucial difference between the date_add (time @ row insert) and the tine we actually want to confider the start of an event, we call it date_exec ( also called actual date). ',
@@ -134,21 +134,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`facility_session` (
   INDEX `fk_facility_session_player2_idx` (`player_id` ASC) VISIBLE,
   CONSTRAINT `fk_facility_session_facility3`
     FOREIGN KEY (`facility_id`)
-    REFERENCES `mydb`.`facility` (`id`)
+    REFERENCES `u469693320_mydb`.`facility` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_facility_session_player2`
     FOREIGN KEY (`player_id`)
-    REFERENCES `mydb`.`player` (`id`)
+    REFERENCES `u469693320_mydb`.`player` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`team_player`
+-- Table `u469693320_mydb`.`team_player`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`team_player` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`team_player` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `team_id` VARCHAR(100) NOT NULL,
   `player_id` VARCHAR(15) NOT NULL,
@@ -157,21 +157,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`team_player` (
   INDEX `fk_team_player_player1_idx` (`player_id` ASC) VISIBLE,
   CONSTRAINT `fk_team_player_team1`
     FOREIGN KEY (`team_id`)
-    REFERENCES `mydb`.`team` (`id`)
+    REFERENCES `u469693320_mydb`.`team` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_team_player_player1`
     FOREIGN KEY (`player_id`)
-    REFERENCES `mydb`.`player` (`id`)
+    REFERENCES `u469693320_mydb`.`player` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`player_game_session`
+-- Table `u469693320_mydb`.`player_game_session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`player_game_session` (
+CREATE TABLE IF NOT EXISTS `u469693320_mydb`.`player_game_session` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_add` DATETIME NULL,
   `score` INT NULL,
@@ -187,22 +187,22 @@ CREATE TABLE IF NOT EXISTS `mydb`.`player_game_session` (
   INDEX `fk_player_game_session_facility_session1_idx` (`facility_session_id` ASC) VISIBLE,
   CONSTRAINT `fk_player_game_session_game_session1`
     FOREIGN KEY (`game_session_id`)
-    REFERENCES `mydb`.`game_session` (`id`)
+    REFERENCES `u469693320_mydb`.`game_session` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_player_game_session_player1`
     FOREIGN KEY (`player_id`)
-    REFERENCES `mydb`.`player` (`id`)
+    REFERENCES `u469693320_mydb`.`player` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_player_game_session_team1`
     FOREIGN KEY (`team_id`)
-    REFERENCES `mydb`.`team` (`id`)
+    REFERENCES `u469693320_mydb`.`team` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_player_game_session_facility_session1`
     FOREIGN KEY (`facility_session_id`)
-    REFERENCES `mydb`.`facility_session` (`id`)
+    REFERENCES `u469693320_mydb`.`facility_session` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
