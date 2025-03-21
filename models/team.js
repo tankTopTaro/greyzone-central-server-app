@@ -25,6 +25,8 @@ const Team = {
 
             const existingTeam = await Team.getById(id);
 
+            console.log('Existing team:', existingTeam)
+
             if (existingTeam && existingTeam.length > 0) {  // Ensure existingTeam is not empty
                console.log('Team already exists:', existingTeam[0].id);
                return existingTeam[0].id;
