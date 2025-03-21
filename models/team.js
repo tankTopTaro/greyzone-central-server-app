@@ -29,7 +29,7 @@ const Team = {
 
             if (existingTeam && existingTeam.length > 0) {  // Ensure existingTeam is not empty
                console.log('Team already exists:', existingTeam[0].id);
-               return existingTeam[0].id;
+               return existingTeam[0];
             }
             
             const [result] = await pool.query(
@@ -38,7 +38,6 @@ const Team = {
             );
 
             const playerIds = unique_identifier.split(',').sort()
-
             const values = playerIds.map(player_id => [unique_identifier, player_id])
 
             if (values.length > 0) {
