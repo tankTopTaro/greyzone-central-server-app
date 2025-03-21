@@ -27,9 +27,9 @@ const Team = {
 
             console.log('Existing team:', existingTeam)
 
-            if (existingTeam && existingTeam.length > 0) {  // Ensure existingTeam is not empty
-               console.log('Team already exists:', existingTeam[0].id);
-               return existingTeam[0];
+            if (existingTeam) {  // Ensure existingTeam is not empty
+               console.log('Team already exists:', existingTeam.id);
+               return existingTeam;
             }
             
             const [result] = await pool.query(
