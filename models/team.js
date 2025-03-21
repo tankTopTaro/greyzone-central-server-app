@@ -17,7 +17,7 @@ const Team = {
     
     create: async (data) => {
         try {
-            let { name, nbr_of_players, unique_identifier } = data
+            let { id, name, nbr_of_players, unique_identifier } = data
 
             const date_add = new Date()
 
@@ -30,12 +30,12 @@ const Team = {
             
             const [result] = await pool.query(
                 "INSERT INTO team (id, name, nbr_of_players, date_add, unique_identifier) VALUES (?, ?, ?, ?, ?)", 
-                [unique_identifier, name, nbr_of_players, date_add, unique_identifier]
+                [id, name, nbr_of_players, date_add, unique_identifier]
             );
 
-            const playerIds = unique_identifier.split(',').sort()
+            const playerIds = id.split(',').sort()
 
-            const values = playerIds.map(player_id => [unique_identifier, player_id])
+            const values = playerIds.map(player_id => [id, player_id])
 
             if (values.length > 0) {
                 const placeholders = values.map(() => '(?, ?)').join(', ');
