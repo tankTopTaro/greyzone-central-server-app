@@ -15,9 +15,9 @@ const teamsController = {
     
     createTeam: async (req, res) => {
         try {
-            const teamId = await Team.create(req.body);
+            const team = await Team.create(req.body);
     
-            res.json({ message: "Team created!", id: teamId });
+            res.json({ message: "Team created!", team: team });
         } catch (error) {
             res.status(500).json({ error: "Server error" });
         }
