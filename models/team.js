@@ -23,11 +23,11 @@ const Team = {
 
             console.log(id, name, nbr_of_players, unique_identifier)
 
-            const existingTeam = await Team.getById(id)
+            const existingTeam = await Team.getById(id);
 
-            if (existingTeam) {
-               console.log('Team already exists:', existingTeam[0].id)
-               return existingTeam[0].id
+            if (existingTeam && existingTeam.length > 0) {  // Ensure existingTeam is not empty
+               console.log('Team already exists:', existingTeam[0].id);
+               return existingTeam[0].id;
             }
             
             const [result] = await pool.query(
