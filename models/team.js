@@ -21,7 +21,9 @@ const Team = {
 
             const date_add = new Date()
 
-            const existingTeam = await Team.getById(unique_identifier)
+            console.log(id, name, nbr_of_players, unique_identifier)
+
+            const existingTeam = await Team.getById(id)
 
             if (existingTeam) {
                console.log('Team already exists:', existingTeam[0].id)
