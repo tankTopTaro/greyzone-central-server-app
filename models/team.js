@@ -35,7 +35,7 @@ const Team = {
 
             const playerIds = unique_identifier.split(',').sort()
 
-            const values = playerIds.map(player_id => [id, player_id])
+            const values = playerIds.map(player_id => [unique_identifier, player_id])
 
             if (values.length > 0) {
                 const placeholders = values.map(() => '(?, ?)').join(', ');
