@@ -33,7 +33,7 @@ const Team = {
                 [id, name, nbr_of_players, date_add, unique_identifier]
             );
 
-            const playerIds = id.split(',').sort()
+            const playerIds = unique_identifier.split(',').sort()
 
             const values = playerIds.map(player_id => [id, player_id])
 
