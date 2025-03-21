@@ -29,7 +29,7 @@ const Team = {
 
             if (existingTeam) {  // Ensure existingTeam is not empty
                console.log('Team already exists:', existingTeam.id);
-               return existingTeam;
+               return false
             }
             
             const [result] = await pool.query(
@@ -46,7 +46,7 @@ const Team = {
                 await pool.query(`INSERT INTO team_player (team_id, player_id) VALUES ${placeholders}`, flatValues);
              }             
     
-            return result.insertId
+            return true
         } catch (error) {
             console.error("Error creating team:", error);
             throw new Error("Failed to create team");
