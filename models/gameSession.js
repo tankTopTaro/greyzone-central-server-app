@@ -11,9 +11,9 @@ const GameSession = {
             // STEP 1: Find last game session (same room_type, rule, level, team) to use as possible parent
             let parentRows = await pool.query(
                `SELECT id from game_session
-               WHERE room_type = ? AND game_rule = ? AND game_level < ? AND facility_id = ?
-               ORDER BY game_level DESC, date_add DESC LIMIT 1`,
-               [room_type, game_rule, game_level, facility_id]
+                  WHERE room_type = ? AND game_rule = ? AND game_level = ? AND facility_id = ?
+                  ORDER BY date_add DESC LIMIT 1`,
+               [room_type, game_rule, game_level - 1, facility_id]
             )
 
             const parent_gs_id = ''
