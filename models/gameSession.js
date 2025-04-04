@@ -6,7 +6,7 @@ const GameSession = {
             const { room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score } = data
 
             const date_add = new Date()
-            const teamId = team_id || null
+            const teamId = team_id || ''
 
             const isCollaborative = is_collaborative ? 1 : 0
             const isWon = is_won ? 1 : 0
@@ -25,7 +25,7 @@ const GameSession = {
             const [gameResult] = await pool.query(
                `INSERT INTO game_session 
                (date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                [
                date_add,
                room_type,
@@ -54,6 +54,8 @@ const GameSession = {
       
             // Insert into player_game_session
             const playerIds = teamId ? teamId.split(',').sort() : [player_id]
+
+
             for (const player_id of playerIds) {
                // Get the most recent facility_session_id for the player
                let [facilitySessionRows] = await pool.query(
