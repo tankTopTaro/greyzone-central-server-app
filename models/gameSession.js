@@ -8,6 +8,9 @@ const GameSession = {
             const date_add = new Date()
             const teamId = team_id || null
 
+            const isCollaborative = is_collaborative ? 1 : 0
+            const isWon = is_won ? 1 : 0
+
             // Find last game session (same room_type, rule, level, team) to use as possible parent
             let parentRows = await pool.query(
                `SELECT id from game_session
