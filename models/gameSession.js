@@ -6,7 +6,7 @@ const GameSession = {
             const { room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score } = data
 
             const date_add = new Date()
-            const teamId = team_id || ''
+            const teamId = team_id || 'no_team'
 
             const isCollaborative = is_collaborative ? 1 : 0
             const isWon = is_won ? 1 : 0
@@ -44,7 +44,7 @@ const GameSession = {
             const game_session_id = gameResult.insertId
       
             // Insert into team_game_session (if there's a team)
-            if (teamId) {
+            if (teamId !== 'no_team') {
                await pool.query(
                `INSERT INTO team_game_session (date_add, score, is_won, game_session_id, team_id)
                   VALUES (?, ?, ?, ?, ?)`,
@@ -53,7 +53,7 @@ const GameSession = {
             }
       
             // Insert into player_game_session
-            const playerIds = teamId ? teamId.split(',').sort() : [player_id]
+            const playerIds = teamId !== 'no_team' ? teamId.split(',').sort() : [player_id]
 
 
             for (const player_id of playerIds) {
