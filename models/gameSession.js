@@ -35,7 +35,7 @@ const GameSession = {
                duration_s_actual,
                game_log,
                log,
-               is_collaborative,
+               isCollaborative,
                parent_gs_id,
                facility_id
                ]
@@ -48,7 +48,7 @@ const GameSession = {
                await pool.query(
                `INSERT INTO team_game_session (date_add, score, is_won, game_session_id, team_id)
                   VALUES (?, ?, ?, ?, ?)`,
-               [date_add, score, is_won, game_session_id, teamId]
+               [date_add, score, isWon, game_session_id, teamId]
                )
             }
       
@@ -72,7 +72,7 @@ const GameSession = {
                [
                   date_add,
                   score,
-                  is_won,
+                  isWon,
                   game_session_id,
                   player_id,
                   teamId,
