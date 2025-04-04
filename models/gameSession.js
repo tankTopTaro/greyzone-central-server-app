@@ -16,11 +16,7 @@ const GameSession = {
                [room_type, game_rule, game_level - 1, facility_id]
             )
 
-            const parent_gs_id = ''
-
-            if (parentRows.length > 0) {
-               parent_gs_id = parentRows[0].id // Parent game session found
-            }
+            const parent_gs_id = parentRows.length ? parentRows[0].id : null
     
             // Insert into game_session
             const [gameResult] = await pool.query(
