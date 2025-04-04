@@ -8,7 +8,7 @@ const GameSession = {
             const date_add = new Date()
             const teamId = team_id || null
 
-            // STEP 1: Find last game session (same room_type, rule, level, team) to use as possible parent
+            // Find last game session (same room_type, rule, level, team) to use as possible parent
             let parentRows = await pool.query(
                `SELECT id from game_session
                   WHERE room_type = ? AND game_rule = ? AND game_level = ? AND facility_id = ?
@@ -22,7 +22,7 @@ const GameSession = {
                parent_gs_id = parentRows[0].id // Parent game session found
             }
     
-            // STEP 2: Insert into game_session
+            // Insert into game_session
             const [gameResult] = await pool.query(
                `INSERT INTO game_session 
                (date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
@@ -44,7 +44,7 @@ const GameSession = {
       
             const game_session_id = gameResult.insertId
       
-            // STEP 3: Insert into team_game_session (if there's a team)
+            // Insert into team_game_session (if there's a team)
             if (teamId) {
                await pool.query(
                `INSERT INTO team_game_session (date_add, score, is_won, game_session_id, team_id)
@@ -53,11 +53,18 @@ const GameSession = {
                )
             }
       
-            // STEP 4: Insert into player_game_session
+            // Insert into player_game_session
             const playerIds = teamId ? teamId.split(',').sort() : [player_id]
             for (const player_id of playerIds) {
-               // Placeholder: Replace this with real facility_session_id logic
-               const facility_session_id = null
+               // Get the most recent facility_session_id for the player
+               let [facilitySessionRows] = await pool.query(
+                  `SELECT id as facility_session_id FROM facility_session
+                  WHERE player_id = ? ORDER BY date_add DESC LIMIT 1`,
+                  [player_id]
+               )
+
+               // If a facility session exists, use the most recent one; otherwise, set it to null
+               const facility_session_id = facilitySessionRows.length > 0 ? facilitySessionRows[0].facility_session_id : null
       
                await pool.query(
                `INSERT INTO player_game_session 
