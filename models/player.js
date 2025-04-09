@@ -76,7 +76,7 @@ const Player = {
             const facility_id = facilityMatch[1]
 
             id = await getNextUniqueId(pool, "player", facility_id)
-            rfid_tag_uid = `RFID-${id}`
+            rfid_tag_uid = ''
 
             const [result] = await pool.query(
                 "INSERT INTO player (id, nick_name, date_add, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
