@@ -25,16 +25,14 @@ const Team = {
 
             const existingTeam = await Team.getById(id);
 
-            console.log('Existing team:', existingTeam)
-
             if (existingTeam) {  // Ensure existingTeam is not empty
                console.log('Team already exists:', existingTeam.id);
-               return false
+               return existingTeam
             }
             
-            const [result] = await pool.query(
-                "INSERT INTO team (id, name, nbr_of_players, date_add, unique_identifier) VALUES (?, ?, ?, ?, ?)", 
-                [id, name, nbr_of_players, date_add, unique_identifier]
+            await pool.query(
+               "INSERT INTO team (id, name, nbr_of_players, date_add, unique_identifier) VALUES (?, ?, ?, ?, ?)", 
+               [id, name, nbr_of_players, date_add, unique_identifier]
             );
 
             const playerIds = unique_identifier.split(',').sort()
@@ -44,9 +42,11 @@ const Team = {
                 const placeholders = values.map(() => '(?, ?)').join(', ');
                 const flatValues = values.flat(); // Flattens the array for query
                 await pool.query(`INSERT INTO team_player (team_id, player_id) VALUES ${placeholders}`, flatValues);
-             }             
+             }     
+             
+            const newTeam = await Team.getById(id)
     
-            return true
+            return newTeam
         } catch (error) {
             console.error("Error creating team:", error);
             throw new Error("Failed to create team");
