@@ -97,7 +97,7 @@ const Player = {
                console.warn('No default images found in assets/defaults')
             }
     
-            return result.insertId;
+            return id;
         } catch (error) {
             console.error("Error creating player:", error);
             throw new Error("Failed to create player");
