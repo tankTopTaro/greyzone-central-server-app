@@ -35,4 +35,7 @@ const getNextUniqueId = async (pool, tableName, facility_id) => {
        console.log('Releasing connection...');
        connection.release(); // Always release the connection
    }
-};
+}
+
+
+export default getNextUniqueId
