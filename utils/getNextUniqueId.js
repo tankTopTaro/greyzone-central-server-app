@@ -1,8 +1,10 @@
 const getNextUniqueId = async (pool, tableName, facility_id) => {
    const connection = await pool.getConnection();
    try {
+       console.log('Starting transaction...');
        await connection.beginTransaction(); // Start a transaction
 
+       console.log('Locking rows with FOR UPDATE...');
        // Lock the rows with the same facility_id to avoid race conditions
        const [rows] = await connection.query(
            `SELECT id FROM ${tableName} WHERE id LIKE ? FOR UPDATE`,
@@ -19,18 +21,18 @@ const getNextUniqueId = async (pool, tableName, facility_id) => {
        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
        const newId = `F${facility_id}-${nextNumber}`;
+       console.log('Generated new ID:', newId);
 
        await connection.commit(); // Commit the transaction
+       console.log('Transaction committed successfully.');
 
        return newId;
    } catch (error) {
+       console.error('Error during transaction:', error);
        await connection.rollback(); // Rollback in case of error
-       console.error('Error generating unique ID:', error);
        throw new Error('Failed to generate unique ID');
    } finally {
+       console.log('Releasing connection...');
        connection.release(); // Always release the connection
    }
 };
-
-
-export default getNextUniqueId
