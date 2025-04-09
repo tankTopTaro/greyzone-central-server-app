@@ -1,12 +1,12 @@
 const getNextUniqueId = async (pool, tableName, facility_id) => {
+   const connection = await pool.getConnection();
    try {
-      // Define the ID pattern based on whether it's a team or player
-      const idPattern = `F${facility_id}-%`
+       await connection.beginTransaction(); // Start a transaction
 
-       // Query to get all IDs for the same facility in the given table
-       const [rows] = await pool.query(
-           `SELECT id FROM ${tableName} WHERE id LIKE ?`,
-           [idPattern]
+       // Lock the rows with the same facility_id to avoid race conditions
+       const [rows] = await connection.query(
+           `SELECT id FROM ${tableName} WHERE id LIKE ? FOR UPDATE`,
+           [`F${facility_id}-%`]
        );
 
        // Extract numbers from the existing IDs
@@ -18,11 +18,19 @@ const getNextUniqueId = async (pool, tableName, facility_id) => {
        // Determine the next available number
        const nextNumber = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1;
 
-       return `F${facility_id}-${nextNumber}`
+       const newId = `F${facility_id}-${nextNumber}`;
+
+       await connection.commit(); // Commit the transaction
+
+       return newId;
    } catch (error) {
-       console.error(`Error generating unique ID for ${tableName}:`, error);
-       throw new Error(`Failed to generate unique ID for ${tableName}`);
+       await connection.rollback(); // Rollback in case of error
+       console.error('Error generating unique ID:', error);
+       throw new Error('Failed to generate unique ID');
+   } finally {
+       connection.release(); // Always release the connection
    }
 };
+
 
 export default getNextUniqueId
