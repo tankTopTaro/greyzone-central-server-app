@@ -33,9 +33,8 @@ const getNextUniqueId = async (pool, tableName, facility_id) => {
        throw new Error('Failed to generate unique ID');
    } finally {
        console.log('Releasing connection...');
-       connection.release(); // Always release the connection
+       connection.release(); // Always release the connection after the transaction is finished
    }
-}
-
+};
 
 export default getNextUniqueId
