@@ -31,39 +31,28 @@ const Player = {
                 throw new Error('At least one search parameter is required.');
             }
     
+            let query = "SELECT * FROM player WHERE ";
             let conditions = [];
             let values = [];
     
             if (email) {
-                conditions.push("LOWER(p.email) LIKE LOWER(?)");
-                values.push(`%${email}%`);
+                conditions.push("LOWER(email) LIKE LOWER(?)");
+                values.push(`%${email}%`)
             }
             if (phone) {
-                conditions.push("LOWER(p.phone) LIKE LOWER(?)");
-                values.push(`%${phone}%`);
+                conditions.push("LOWER(phone) LIKE LOWER(?)");
+                values.push(`%${phone}%`)
             }
             if (first_name) {
-                conditions.push("LOWER(p.first_name) LIKE LOWER(?)");
-                values.push(`%${first_name}%`);
+                conditions.push("LOWER(first_name) LIKE LOWER(?)");
+                values.push(`%${first_name}%`)
             }
             if (last_name) {
-                conditions.push("LOWER(p.last_name) LIKE LOWER(?)");
-                values.push(`%${last_name}%`);
+                conditions.push("LOWER(last_name) LIKE LOWER(?)");
+                values.push(`%${last_name}%`)
             }
     
-            const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" OR ")}` : '';
-    
-            const query = `
-                SELECT 
-                    p.*, 
-                    MAX(fs.date_exec) AS last_visit 
-                FROM player p
-                LEFT JOIN facility_session fs ON fs.player_id = p.id
-                ${whereClause}
-                GROUP BY p.id
-                ORDER BY IFNULL(MAX(fs.date_exec), p.date_add) DESC
-                LIMIT 10
-            `;
+            query += conditions.join(" OR ") + " LIMIT 10";
     
             const [players] = await pool.query(query, values);
             return players;
@@ -72,7 +61,6 @@ const Player = {
             throw new Error("Failed to search player");
         }
     },
-    
     
     create: async (data) => {
         try {
