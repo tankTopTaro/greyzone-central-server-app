@@ -17,17 +17,6 @@ function startServer() {
 
    app.get('/api/players/search', async (req, res) => {
       try {
-            const player = await Player.getById(req.params.player_id);
-            
-            if (!player) return res.status(404).json({ error: "Player not found" });
-
-            res.json(player)
-      } catch (error) {
-            res.status(500).json({ error: "Database error "});
-      }
-   })
-   app.get('/api/players/:player_id', async (req, res) => {
-      try {
             const players = await Player.search(req.query);
 
             if (players.length === 0) return res.status(404).json({ error: "Search Player not found" });
@@ -35,6 +24,17 @@ function startServer() {
             res.json(players);
       } catch (error) {
             res.status(400).json({ message: error.message });
+      }
+   })
+   app.get('/api/players/:player_id', async (req, res) => {
+      try {
+            const player = await Player.getById(req.params.player_id);
+            
+            if (!player) return res.status(404).json({ error: "Player not found" });
+
+            res.json(player)
+      } catch (error) {
+            res.status(500).json({ error: "Database error "});
       }
    })
    app.post('/api/players', async (req, res) => {
