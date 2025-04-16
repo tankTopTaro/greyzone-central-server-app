@@ -3,29 +3,19 @@ import pool from '../db.js'
 const GameSession = {
     upload: async (data) => {
         try {
-            const { room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score } = data
+            const { room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score, parent_gs_id } = data
 
             const date_add = new Date()
             const teamId = team_id || 'no_team'
 
             const isCollaborative = is_collaborative ? 1 : 0
             const isWon = is_won ? 1 : 0
-
-            // Find last game session (same room_type, rule, level, team) to use as possible parent
-            let parentRows = await pool.query(
-               `SELECT id from game_session
-                  WHERE room_type = ? AND game_rule = ? AND game_level = ? AND facility_id = ?
-                  ORDER BY date_add DESC LIMIT 1`,
-               [room_type, game_rule, game_level - 1, facility_id]
-            )
-
-            const parent_gs_id = parentRows.length ? parentRows[0].id : null
     
             // Insert into game_session
             const [gameResult] = await pool.query(
                `INSERT INTO game_session 
-               (date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                  (date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                [
                date_add,
                room_type,
