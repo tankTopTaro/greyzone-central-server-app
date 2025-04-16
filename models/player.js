@@ -58,7 +58,7 @@ const Player = {
                   p.*,
                   MAX(fs.date_exec) AS last_visit
                FROM player p
-               LEFT JOIN facility_session fs ON fs.player.id = p.id
+               LEFT JOIN facility_session fs ON fs.player_id = p.id
                ${whereClause}
                GROUP BY p.id
                ORDER BY IFNULL(MAX(fs.date_exec), p.date_add) DESC
