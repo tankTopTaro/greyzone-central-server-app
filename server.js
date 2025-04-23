@@ -113,6 +113,20 @@ function startServer() {
       }
    })
 
+   app.get('/api/latest-ids', async (req, res) => {
+      try {
+            const latestPlayer = await Player.getLatestId()
+            const latestGameSession = await GameSession.getLatestId()
+
+            res.json({
+                  player: latestPlayer,
+                  gameSession: latestGameSession,
+            })
+      } catch (error) {
+            res.status(500).json({ error: 'Failed to retrieve latest IDs.'})
+      }
+   })
+
    app.get('/api/health', (req, res) => { res.json({status: 'ok'}) })
 
    app.listen(port, () => {

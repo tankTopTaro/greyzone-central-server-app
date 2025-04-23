@@ -113,6 +113,12 @@ const Player = {
             console.error("Error creating player:", error);
             throw new Error("Failed to create player");
         }
+    },
+
+    getLatestId: async () => {
+        const result = await pool.query(`SELECT id FROM player ORDER BY id DESC LIMIT 1`)
+
+        return result[0]?.id ?? null
     }
 }
 

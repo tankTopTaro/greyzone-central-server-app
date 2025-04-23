@@ -78,6 +78,12 @@ const GameSession = {
             console.error("Error uploading game session:", error)
             throw new Error("Failed to upload game session")
         }
+    },
+
+    getLatestId: async () => {
+         const result = await pool.query(`SELECT id FROM game_session ORDER BY id DESC LIMIT 1`)
+
+         return result[0]?.id ?? null
     }
 }
 
