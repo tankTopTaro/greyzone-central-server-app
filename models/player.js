@@ -123,9 +123,11 @@ const Player = {
             WHERE id LIKE ?
             ORDER BY CAST(SUBSTRING_INDEX(id, '-', -1) AS UNSIGNED) DESC
             LIMIT 1
-        `)
+        `, [`${prefix}%`])
 
-        return result[0]?.id ?? null
+        const rows = result[0] ?? []
+
+        return rows.length > 0 ? rows[0].id : null
     }
 }
 
