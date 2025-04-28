@@ -115,8 +115,15 @@ const Player = {
         }
     },
 
-    getLatestId: async () => {
-        const result = await pool.query(`SELECT id FROM player ORDER BY id DESC LIMIT 1`)
+    getLatestId: async (facilityId) => {
+        const prefix = `F${facilityId}-`
+
+        const result = await pool.query(`
+            SELECT id FROM player 
+            WHERE id LIKE ?
+            ORDER BY CAST(SUBSTRING_INDEX(id, '-', -1) AS UNSIGNED) DESC
+            LIMIT 1
+        `)
 
         return result[0]?.id ?? null
     }
