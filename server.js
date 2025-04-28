@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express from 'express'
+import multer from 'multer'
 import bodyParser from 'body-parser'
 
 import Player from './models/player.js'
@@ -7,6 +8,8 @@ import Team from './models/team.js'
 import Image from './models/image.js'
 import FacilitySession from './models/facilitySession.js'
 import GameSession from './models/gameSession.js'
+
+const upload = multer({dest: 'tmp_uploads/'})
 
 function startServer() {
    const app = express()
@@ -37,9 +40,11 @@ function startServer() {
             res.status(500).json({ message: "Database error", error: error});
       }
    })
-   app.post('/api/players', async (req, res) => {
+   app.post('/api/players', upload.single('avatar'), async (req, res) => {
       try {
-            const playerId = await Player.create(req.body);
+            const playerData = req.body
+            const avatar = req.file
+            const playerId = await Player.create(playerData, avatar);
 
             res.json({ message: "Player created!", id: playerId });
       } catch (error) {

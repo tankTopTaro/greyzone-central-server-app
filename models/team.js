@@ -19,8 +19,6 @@ const Team = {
         try {
             let { id, name, nbr_of_players, unique_identifier } = data
 
-            const date_add = new Date()
-
             console.log(id, name, nbr_of_players, unique_identifier)
 
             const existingTeam = await Team.getById(id);
@@ -31,8 +29,8 @@ const Team = {
             }
             
             await pool.query(
-               "INSERT INTO team (id, name, nbr_of_players, date_add, unique_identifier) VALUES (?, ?, ?, ?, ?)", 
-               [id, name, nbr_of_players, date_add, unique_identifier]
+               "INSERT INTO team (id, name, nbr_of_players, date_add, unique_identifier) VALUES (?, ?, ?, NOW(), ?)", 
+               [id, name, nbr_of_players, unique_identifier]
             );
 
             const playerIds = unique_identifier.split(',').sort()

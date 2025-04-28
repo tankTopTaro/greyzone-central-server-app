@@ -73,39 +73,22 @@ const Player = {
         }
     },
     
-    create: async (data) => {
+    create: async (playerData, avatar) => {
         try {
-            let { id, nick_name, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid } = data;
-    
-            const date_add = new Date()
-            const facilityMatch = id.match(/^F(\d+)-\d+$/)
+            const { id, nick_name, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid } = playerData;
 
-            if (!facilityMatch) {
-               console.error('player Invalid ID format')
-            }
-
-            const facility_id = facilityMatch[1]
-
-            id = await getNextUniqueId(pool, "player", facility_id)
-            rfid_tag_uid = ''
-
-            const [result] = await pool.query(
-                "INSERT INTO player (id, nick_name, date_add, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-                [id, nick_name, date_add, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid]
+            await pool.query(
+                "INSERT INTO player (id, nick_name, date_add, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid) VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+                [id, nick_name, email, phone, last_name, first_name, gender, birth_date, notes, log, league_country, league_city, league_district, league_other, rfid_tag_uid]
             );
 
-            // Copy and rename profile image
-            const defaultImages = fs.readdirSync(DEFAULT_IMAGES_DIR)
+            if (avatar) {
+                if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true })
 
-            if (defaultImages.length > 0) {
-               const randomImage = defaultImages[Math.floor(Math.random() * defaultImages.length)]
-               const sourcePath = path.join(DEFAULT_IMAGES_DIR, randomImage)
-               const destPath = path.join(UPLOADS_DIR, `${id}${path.extname(randomImage)}`)
+                const ext = path.extname(avatar.originalname) || '.jpg'
+                const destinationPath = path.join(UPLOADS_DIR, `${id}${ext}`)
 
-               fs.copyFileSync(sourcePath, destPath)
-               //console.log(`Profile image for player ${id} copied to: ${destPath}`)
-            } else {
-               console.warn('No default images found in assets/defaults')
+                fs.renameSync(avatar.path, destinationPath)
             }
     
             return id;
