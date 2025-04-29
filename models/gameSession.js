@@ -78,10 +78,19 @@ const GameSession = {
         }
     },
 
-    getLatestId: async () => {
-         const result = await pool.query(`SELECT id FROM game_session ORDER BY id DESC LIMIT 1`)
+    getLatestId: async (facilityId) => {
+        const prefix = `F${facilityId}-`
 
-         return result[0]?.id ?? null
+        const result = await pool.query(`
+            SELECT id FROM  game_session
+            WHERE id LIKE ?
+            ORDER BY CAST(SUBSTRING_INDEX(id, '-', -1) AS UNSIGNED) DESC
+            LIMIT 1
+        `, [`${prefix}%`])
+
+        const rows = result[0] ?? []
+
+        return rows.length > 0 ? rows[0].id : null
     }
 }
 
