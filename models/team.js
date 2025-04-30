@@ -25,7 +25,7 @@ const Team = {
 
             if (existingTeam) {  // Ensure existingTeam is not empty
                console.log('Team already exists:', existingTeam.id);
-               return { created: false, team: existingTeam }
+               return false
             }
             
             await pool.query(
@@ -44,7 +44,7 @@ const Team = {
              
             const newTeam = await Team.getById(id)
     
-            return { created: true, team: newTeam }
+            return true
         } catch (error) {
             console.error("Error creating team:", error);
             throw new Error("Failed to create team");

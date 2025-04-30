@@ -67,10 +67,10 @@ function startServer() {
       try {
             const results = await Team.create(req.body);
 
-            if (results.created) {
+            if (results) {
                res.json({ message: "Team created successfully!" });
             } else {
-               res.status(400).json({ message: "Team already exists!" }); // If team already exists
+               res.status(400).json({ message: "Team already exists!"}); // If team already exists
             }
       } catch (error) {
             res.status(500).json({ message: "Server error", error: error });
