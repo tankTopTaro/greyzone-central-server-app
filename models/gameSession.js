@@ -3,9 +3,8 @@ import pool from '../db.js'
 const GameSession = {
     upload: async (data) => {
         try {
-            const { room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score, parent_gs_id } = data
+            const { id, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, facility_id, team_id, player_id, is_won, score, parent_gs_id } = data
 
-            const date_add = new Date()
             const teamId = team_id || 'no_team'
 
             const isCollaborative = is_collaborative ? 1 : 0
@@ -14,23 +13,24 @@ const GameSession = {
             // Insert into game_session
             const [gameResult] = await pool.query(
                `INSERT INTO game_session 
-                  (date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
-                  VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                  (id, date_add, room_type, game_rule, game_level, duration_s_theory, duration_s_actual, game_log, log, is_collaborative, parent_gs_id, facility_id) 
+                  VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                [
-               room_type,
-               game_rule,
-               game_level,
-               duration_s_theory,
-               duration_s_actual,
-               game_log,
-               log,
-               isCollaborative,
-               parent_gs_id,
-               facility_id
+                  id,
+                  room_type,
+                  game_rule,
+                  game_level,
+                  duration_s_theory,
+                  duration_s_actual,
+                  game_log,
+                  log,
+                  isCollaborative,
+                  parent_gs_id,
+                  facility_id
                ]
             )
       
-            const game_session_id = gameResult.insertId
+            const game_session_id = id
       
             // Insert into team_game_session (if there's a team)
             if (teamId !== 'no_team') {
