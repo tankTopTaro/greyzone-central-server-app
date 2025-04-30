@@ -65,9 +65,9 @@ function startServer() {
    })
    app.post('/api/teams', async (req, res) => {
       try {
-            const teamCreated = await Team.create(req.body);
+            const results = await Team.create(req.body);
 
-            if (teamCreated) {
+            if (results.created) {
                res.json({ message: "Team created successfully!" });
             } else {
                res.status(400).json({ message: "Team already exists!" }); // If team already exists
